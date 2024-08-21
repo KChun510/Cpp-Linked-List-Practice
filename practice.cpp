@@ -14,6 +14,9 @@ public:
 		this->data = data;
 		this->next = NULL;
 	}
+	~Node(){
+//		delete this->next; 
+	}
 };
 
 class linkedList{
@@ -22,6 +25,7 @@ public:
 	linkedList(){head = NULL;};
 	void insertNode(int); 
 	void printList();
+	void deleteNode(int);
 };
 
 void linkedList::insertNode(int data){
@@ -46,10 +50,46 @@ void linkedList::printList(){
 		temp = temp->next;
 	}
 		
-	std::cout << temp->data << " -> ";
+	std::cout << temp->data << std::endl;
 	
 	
 }
+
+void linkedList::deleteNode(int location){
+	location -= 1;
+	// Everything starts from the head.
+	// That why when we do a delete "temp", the actual node gets deleted.
+	// Because it linked to our head object.
+	Node* temp = head; 
+	if ( head == NULL){
+		std::cout << "Empty List";
+		return;
+	}
+	// Delete the head
+	if(location == -1){
+		head = temp->next;
+		delete temp;
+	}
+
+	
+	for(int i = 0; i <= location; i++){
+		Node* curr = temp;
+		temp = temp->next;
+		if(i == location & temp->next != NULL){
+			curr->next = temp->next;
+			delete temp; 
+		}
+		// Reached the end of link
+		else if( i == location & temp->next == NULL){
+			delete temp;
+			
+		}
+
+	}
+
+	
+}
+
 
 void dataGen(int max){	
 	linkedList lnkList;
@@ -57,11 +97,15 @@ void dataGen(int max){
 		lnkList.insertNode(i);
 	}
 	lnkList.printList();
+	lnkList.deleteNode(0);
+	lnkList.deleteNode(3);
+	lnkList.deleteNode(4);
+	lnkList.printList();
 	
 }
 
 //TO-DO: Write our delete Node method
 int main(){
-	dataGen(100);
+	dataGen(10);
 	return 1;
 }
